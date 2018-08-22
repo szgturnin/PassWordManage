@@ -9,7 +9,13 @@ ApplicationWindow {
     title: qsTr("PasswordManager")
 
     Rectangle{
+
        id:_mainwindow
+       Image {
+           id: mainbackground
+           source: "qrc:/image/yuzhibo.png"
+           anchors.fill: _mainwindow
+       }
        anchors.fill: parent
            ColumnLayout{
                id:layout1

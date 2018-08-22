@@ -4,5 +4,6 @@
         <file>LoginWindow.qml</file>
         <file>image/safe.png</file>
         <file>StyleButton.qml</file>
+        <file>image/yuzhibo.png</file>
     </qresource>
 </RCC>
