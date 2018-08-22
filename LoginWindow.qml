@@ -10,18 +10,40 @@ Rectangle{
     border.width: 1
     ColumnLayout{
         spacing: 0
-        TextField{
-            id:account1
-            placeholderText: qsTr("请输入账号")
+        RowLayout{
+            TextField{
+                id:account1
+                placeholderText: qsTr("请输入账号")
 
-            //signal accountChange(string name)
-            background: Rectangle{
-                implicitWidth: root.width
-                implicitHeight: root.height/2
-                opacity: 0 //为0 是看不见
+                //signal accountChange(string name)
+                background: Rectangle{
+                    implicitWidth: root.width
+                    implicitHeight: root.height/2
+                    opacity: 0 //为0 是看不见
+                }
+               // onTextChanged: account1.accountChange(account1.text)
             }
-           // onTextChanged: account1.accountChange(account1.text)
+            spacing: 18
+            Text {
+                id:register
+                text: qsTr("注册账号")
+                color: "#00A3FF"
+                font.pixelSize: 10
+                MouseArea{
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    //onClicked: Qt.openUrlExternally("https://www.baidu.com/")
+                    onEntered: {
+                        register.color="#3CC3F5"
+                    }
+                    onExited: {
+                        register.color="#00A3FF"
+                    }
+                }
+            }
         }
+
+
         Rectangle{
             width: root.width
             height: 1

@@ -11,34 +11,31 @@ ApplicationWindow {
     Rectangle{
        id:_mainwindow
        anchors.fill: parent
-       ColumnLayout{
-           id:layout
-           anchors.horizontalCenter: _mainwindow.horizontalCenter
-           anchors.verticalCenter: _mainwindow.verticalCenter
+           ColumnLayout{
+               id:layout1
+               anchors.horizontalCenter: _mainwindow.horizontalCenter
+               anchors.verticalCenter: _mainwindow.verticalCenter
 
-           LoginWindow{
-               id:loginwindow
-           }
-           RowLayout{
-               anchors.horizontalCenterOffset: layout.horizontalCenter
-               CheckBox{
-                   id:passwordBox
-                   text:qsTr("记住密码")
+               LoginWindow{
+                   id:loginwindow
                }
-               CheckBox{
-                   id:autologin
-                   text:qsTr("自动登录")
+               RowLayout{
+                   anchors.horizontalCenter: layout1.horizontalCenter
+                   CheckBox{
+                       id:passwordBox
+                       text:qsTr("记住密码")
+                   }
+                   CheckBox{
+                       id:autologin
+                       text:qsTr("自动登录")
+                   }
                }
-           }
-           StyleButton{
-               id:_button
-               anchors.horizontalCenter: layout.horizontalCenter
+               StyleButton{
+                   id:_button
+                   anchors.horizontalCenter: layout1.horizontalCenter
 
+               }
            }
+
        }
-
-    }
-
-
-
 }
