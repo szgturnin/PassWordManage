@@ -14,7 +14,7 @@ Window {
     MouseArea{
         anchors.fill: parent
         onClicked: {
-            UiBridge.revMessageFromQml("qml send message to c++");
+            UiBridge.revMessageFromQml("qml send message to c++");//Qml signals
         }
     }
 }

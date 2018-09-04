@@ -10,7 +10,7 @@ QString UIBridge::getString() const
     return "string from getString() function";
 }
 
-void UIBridge::revMessageFromQml(QString message)
+void UIBridge::revMessageFromQml(QString message)// declare function in c++ class
 {
      qDebug()<<"Message form qml:"<<message<<endl;
      emit sendmessagetoShowMessage("inner c++Class send message to another c++Class in other different way");
