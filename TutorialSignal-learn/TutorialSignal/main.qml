@@ -15,7 +15,7 @@ ApplicationWindow {
     }
     Component.onCompleted: {
         page2.buttonClicked.connect(function(buttonId){console.log("xxxxxxxxx",buttonId)});
-    }
+    }//接收信号，需要写明接收信号的主体，上面把信号的主体重新命名了一个新的名字
 
     /*Component{
         id:page1

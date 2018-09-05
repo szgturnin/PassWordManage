@@ -1,6 +1,7 @@
 ﻿import QtQuick 2.0
 import QtQuick.Controls 2.2
 Page{
+    //property alias mytext1: mytext//给下面的mytext取一个别名的属性，mytext1就代表mytext
     Button{
         id:button1
         /*Text {
