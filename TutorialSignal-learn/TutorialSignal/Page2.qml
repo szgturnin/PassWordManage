@@ -86,5 +86,5 @@ Page{
           button5.clicked.connect(function(){
           buttonClicked(5);
           });
-      }
+      }//Component.onCompleted这个用法也可以起到信号槽的作用啊
 }
