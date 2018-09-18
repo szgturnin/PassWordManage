@@ -1,0 +1,1 @@
+Rcc'ing qml.qrc...;D:\QT-INSTALL-FOLDER\5.11.1\MSVC2015_64\bin\rcc.exe;"D:\GITSUBMIT\PassWordManage\qml.qrc" -o ".\GeneratedFiles\qrc_qml.cpp" --name qml
