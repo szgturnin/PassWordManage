@@ -109,7 +109,7 @@ void WRxml::WriteXml(QString username,QString passwd)//能增加的话最好，�
     file.close();
 }
 
-void WRxml::DeleteXml(QString username,QString passwd)
+void WRxml::DeleteXml(QString username,QString passwd)//如果找到了就删除，没有找到就添加
 {
     QFile file(QDir::currentPath()+QString("/test.xml"));
     if(!file.open(QFile::Text|QFile::ReadOnly|QIODevice::WriteOnly))
@@ -171,7 +171,7 @@ void WRxml::RemoveXml()
 
 }
 
-void WRxml::ChangeXml(QString username,QString passwd)
+void WRxml::ChangeXml(QString username,QString passwd)//如果相等就修改，如果不存在就添加
 {
     QFile file(QDir::currentPath()+QString("/test.xml"));
     if(!file.open(QFile::Text|QFile::ReadOnly|QIODevice::WriteOnly))
