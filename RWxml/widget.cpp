@@ -51,7 +51,9 @@ Widget::~Widget()
 void Widget::WriteXml()
 {
     //xmlObject->WriteXml(lineAccount->text(),linePasswd->text());
-    xmlObject->WriteXml("2","6");
+   // xmlObject->WriteXml(lineAccount->text(),linePasswd->text());
+   // xmlObject->ChangeXml(lineAccount->text(),linePasswd->text());
+    xmlObject->DeleteXml(lineAccount->text(),linePasswd->text());
 }
 
 void Widget::SearchXml()

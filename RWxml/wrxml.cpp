@@ -41,29 +41,28 @@ void WRxml::WriteXml(QString username,QString passwd)//能增加的话最好，�
         qDebug()<<"open file is fail"<<endl;
         return;
      }*/
-    if(!file.open(QFile::Text|QFile::ReadOnly))
+    if(!file.open(QFile::Text|QFile::ReadOnly|QIODevice::WriteOnly))
     {
         qDebug()<<"open file is fail"<<endl;
         return;
      }
     /*-----------------先全部读进来--------------------*/
     QDomDocument doc;
-    if(!doc.setContent(&file))
+    if(!doc.setContent(&file))//把FILE文件中的文本读取到doc中
     {
         file.close();
         return ;
     }
    // qDebug()<<doc.toString()<<endl;
     QDomDocument Xml;
-    QString name;
     QDomElement rootElem=doc.documentElement();
 
-    qDebug()<<rootElem.tagName()<<endl;
+    //qDebug()<<rootElem.tagName()<<endl;
 
     QDomElement main=  Xml.createElement(rootElem.tagName());
     Xml.appendChild(main);
 
-    qDebug()<<Xml.toString()<<endl;
+    //qDebug()<<Xml.toString()<<endl;
     QDomNode rootNode=rootElem.firstChild();
     while (!rootNode.isNull())
     {
@@ -71,18 +70,22 @@ void WRxml::WriteXml(QString username,QString passwd)//能增加的话最好，�
         if(!fileElem.isNull())
         {
             QDomElement tagname=doc.createElement(fileElem.tagName());
-
+            main.appendChild(tagname);
             //Xml.appendChild(tagname);
-            qDebug()<<fileElem.tagName()<<endl;
+           // qDebug()<<fileElem.tagName()<<endl;
 
             QDomText text=doc.createTextNode(fileElem.text());
 
-           // tagname.appendChild(text);
+            tagname.appendChild(text);
 
-            qDebug()<<fileElem.text()<<endl;
+           // qDebug()<<fileElem.text()<<endl;
         }
         rootNode=rootNode.nextSibling();
     }
+    QDomElement tagname=doc.createElement(username);
+    main.appendChild(tagname);
+    QDomText text=doc.createTextNode(passwd);
+    tagname.appendChild(text);
     qDebug()<<Xml.toString()<<endl;//上面这个while循环中已经在doc中把所有的节点信息读取进去了
 
 
@@ -98,113 +101,132 @@ void WRxml::WriteXml(QString username,QString passwd)//能增加的话最好，�
 
     xmlwriter.writeEndElement();
     xmlwriter.writeEndDocument();*/
+    file.resize(0);//清空file中管理的文本
+    QTextStream textOutput(&file);
+    textOutput<<Xml.toString();
+    //这段代码是直接在xml文本上添加xml.tostring()的内容
+
     file.close();
 }
 
-void WRxml::ReadXml()
+void WRxml::DeleteXml(QString username,QString passwd)
 {
     QFile file(QDir::currentPath()+QString("/test.xml"));
-    if(!file.open(QFile::Text|QFile::ReadOnly))
+    if(!file.open(QFile::Text|QFile::ReadOnly|QIODevice::WriteOnly))
     {
         qDebug()<<"open file is fail"<<endl;
         return;
      }
     QDomDocument doc;
-    if(!doc.setContent(&file))
+    if(!doc.setContent(&file))//把FILE文件中的文本读取到doc中
     {
         file.close();
         return ;
     }
-    QString name;
+    QDomDocument Xml;
     QDomElement rootElem=doc.documentElement();
+    QDomElement main=  Xml.createElement(rootElem.tagName());
+    Xml.appendChild(main);
     QDomNode rootNode=rootElem.firstChild();
+    int flag=0;
     while (!rootNode.isNull())
     {
         QDomElement fileElem=rootNode.toElement();
         if(!fileElem.isNull())
         {
-            name=fileElem.tagName();
-            qDebug()<<name<<"   "<<fileElem.text()<<endl;
+            if(fileElem.tagName()==username)
+            {
+                flag=1;
+
+            }
+            else
+            {
+                QDomElement newnode=doc.createElement(fileElem.tagName());
+                main.appendChild(newnode);
+                QDomText text=doc.createTextNode(fileElem.text());
+                newnode.appendChild(text);
+            }
         }
         rootNode=rootNode.nextSibling();
     }
+    if(flag==0)
+    {
+        QDomElement tagname=doc.createElement(username);
+        main.appendChild(tagname);
+        QDomText text=doc.createTextNode(passwd);
+        tagname.appendChild(text);
+        qDebug()<<Xml.toString()<<endl;
+    }
+    file.resize(0);
+    QTextStream textOutput(&file);
+    textOutput<<Xml.toString();
+    file.close();
 }
 
-void WRxml::AddXml()
-{
-    //打开文件
-        QFile file("test.xml"); //相对路径、绝对路径、资源路径都可以
-        if(!file.open(QFile::ReadOnly))
-            return;
 
-        //增加一个一级子节点以及元素
-        QDomDocument doc;
-        if(!doc.setContent(&file))
-        {
-            file.close();
-            return;
-        }
-        file.close();
 
-        QDomElement root=doc.documentElement();
-        QDomElement book=doc.createElement("book");
-        book.setAttribute("id",3);
-        book.setAttribute("time","1813/1/27");
-        QDomElement title=doc.createElement("title");
-        QDomText text;
-        text=doc.createTextNode("Pride and Prejudice");
-        title.appendChild(text);
-        book.appendChild(title);
-        QDomElement author=doc.createElement("author");
-        text=doc.createTextNode("Jane Austen");
-        author.appendChild(text);
-        book.appendChild(author);
-        root.appendChild(book);
-
-        if(!file.open(QFile::WriteOnly|QFile::Truncate)) //先读进来，再重写，如果不用truncate就是在后面追加内容，就无效了
-            return;
-        //输出到文件
-        QTextStream out_stream(&file);
-        doc.save(out_stream,4); //缩进4格
-        file.close();
-}
 
 void WRxml::RemoveXml()
 {
-    //打开文件
-        QFile file("test.xml"); //相对路径、绝对路径、资源路径都可以
-        if(!file.open(QFile::ReadOnly))
-            return;
 
-        //删除一个一级子节点及其元素，外层节点删除内层节点于此相同
-        QDomDocument doc;
-        if(!doc.setContent(&file))
-        {
-            file.close();
-            return;
-        }
-        file.close();  //一定要记得关掉啊，不然无法完成操作
-
-        QDomElement root=doc.documentElement();
-        QDomNodeList list=doc.elementsByTagName("book"); //由标签名定位
-        for(int i=0;i<list.count();i++)
-        {
-            QDomElement e=list.at(i).toElement();
-            if(e.attribute("time")=="2007/5/25")  //以属性名定位，类似于hash的方式，warning：这里仅仅删除一个节点，其实可以加个break
-                root.removeChild(list.at(i));
-        }
-
-        if(!file.open(QFile::WriteOnly|QFile::Truncate))
-            return;
-        //输出到文件
-        QTextStream out_stream(&file);
-        doc.save(out_stream,4); //缩进4格
-        file.close();
 }
 
-void WRxml::UpdateXml()
+void WRxml::ChangeXml(QString username,QString passwd)
 {
-    //打开文件
+    QFile file(QDir::currentPath()+QString("/test.xml"));
+    if(!file.open(QFile::Text|QFile::ReadOnly|QIODevice::WriteOnly))
+    {
+        qDebug()<<"open file is fail"<<endl;
+        return;
+     }
+    QDomDocument doc;
+    if(!doc.setContent(&file))//把FILE文件中的文本读取到doc中
+    {
+        file.close();
+        return ;
+    }
+    QDomDocument Xml;
+    QDomElement rootElem=doc.documentElement();
+    QDomElement main=  Xml.createElement(rootElem.tagName());
+    Xml.appendChild(main);
+    QDomNode rootNode=rootElem.firstChild();
+    int flag=0;
+    while (!rootNode.isNull())
+    {
+        QDomElement fileElem=rootNode.toElement();
+        if(!fileElem.isNull())
+        {
+            if(fileElem.tagName()==username)
+            {
+                flag=1;
+                QDomElement newnode=doc.createElement(fileElem.tagName());
+                main.appendChild(newnode);
+                QDomText text=doc.createTextNode(passwd);
+                newnode.appendChild(text);
+            }
+            else
+            {
+                QDomElement newnode=doc.createElement(fileElem.tagName());
+                main.appendChild(newnode);
+                QDomText text=doc.createTextNode(fileElem.text());
+                newnode.appendChild(text);
+            }
+        }
+        rootNode=rootNode.nextSibling();
+    }
+    if(flag==0)
+    {
+        QDomElement tagname=doc.createElement(username);
+        main.appendChild(tagname);
+        QDomText text=doc.createTextNode(passwd);
+        tagname.appendChild(text);
+        qDebug()<<Xml.toString()<<endl;
+    }
+    file.resize(0);
+    QTextStream textOutput(&file);
+    textOutput<<Xml.toString();
+    file.close();
+    /*//打开文件
         QFile file("test.xml"); //相对路径、绝对路径、资源路径都可以
         if(!file.open(QFile::ReadOnly))
             return;
@@ -232,6 +254,6 @@ void WRxml::UpdateXml()
         //输出到文件
         QTextStream out_stream(&file);
         doc.save(out_stream,4); //缩进4格
-        file.close();
+        file.close();*/
 }
 

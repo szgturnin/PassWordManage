@@ -1,6 +1,7 @@
 <note>
-	<to>George</to>
-	<from>John</from>
-	<heading>Reminder</heading>
-	<body>Don't forget the meeting!</body>
+ <from>John</from>
+ <heading>Reminder</heading>
+ <body>Don't forget the meeting!</body>
+ <test>yes</test>
+ <heiheihei>yes</heiheihei>
 </note>

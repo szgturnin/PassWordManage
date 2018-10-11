@@ -16,10 +16,9 @@ class WRxml : public QObject
 public:
     explicit WRxml(QObject *parent = nullptr);
     void WriteXml(QString username,QString passwd);
-    void ReadXml();
-    void AddXml();
+    void DeleteXml(QString username,QString passwd);
     void RemoveXml();
-    void UpdateXml();
+    void ChangeXml(QString username,QString passwd);
 signals:
 
 public slots:
