@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     QObject *quitButton=root->findChild<QObject*>("quitButton");
     if(quitButton)
     {
-        QObject::connect(quitButton,SIGNAL(clicked()),&app,SLOT(quit()));
+        QObject::connect(quitButton,SIGNAL(clicked()),&app,SLOT(quit()));// 对应的qml在C++里面是QObject的对象
 
     }
     QObject *textLabel=root->findChild<QObject*>("textLable");
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         bool bRet=QMetaObject::invokeMethod(textLabel,"setText",Q_ARG(QString,"world Hello"));
         qDebug()<<"call setText return :"<<bRet<<endl;
         textLabel->setProperty("color",QColor::fromRgb(255,0,0));
-        bRet=QMetaObject::invokeMethod(textLabel,"doLayout");
+        bRet=QMetaObject::invokeMethod(textLabel,"doLayout");//调用对应的方法要看C++类里面是否存在，方法名字的字符串要正确才行
         qDebug()<<"call dolayout return :"<<bRet<<endl;
 
     }

@@ -14,6 +14,7 @@ ApplicationWindow {
         id:mystackview
         anchors.fill: parent
         initialItem: page1
+
     }
 
 }

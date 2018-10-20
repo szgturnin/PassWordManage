@@ -12,16 +12,28 @@
 #include<QTextStream>
 #include<QXmlStreamWriter>
 #include<QXmlStreamReader>
+#include<QTextStream>
+#include<QVector>
 class WrXml : public QObject
 {
     Q_OBJECT
+    //Q_PROPERTY(int test1 READ test WRITE ChangeXml)//读属性，不能带参数，否则会报错
 public:
     explicit WrXml(QObject *parent = nullptr);
-    void ChangeXml(QString username,QString passwd);
-     void DeleteXml(QString username,QString passwd);
+    /*从下面3个函数测试来看，基本调用下面这些宏，也不需要上面Q_PROPERTY这个宏其实就可以实现qml调用C++的代码，并且参数不受限制
+但是函数名的首写字母最好不要大写，因为他会要求什么new的问题*/
+   Q_INVOKABLE void changeXml(QString usernamePasswd);
+     Q_INVOKABLE void deleteXml(QString username,QString passwd);
+     Q_INVOKABLE int test();
+   // Q_INVOKABLE QString readText();
+    Q_INVOKABLE int howManyRows();//在mac中是这样的，如果你声明了这个函数为qml可以调用的，
+    //那么你就一定要有函数的实现。否则就会报错:-1: error: symbol(s) not found for architecture x86_64
 signals:
 
 public slots:
+private:
+     int test11;
+     QVector<QString> m_stringVec;
 };
 
 #endif // WRXML_H

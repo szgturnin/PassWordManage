@@ -27,7 +27,10 @@ Page{
                 font.pixelSize: 24
                 anchors.right: navigation.right
                 anchors.top: navigation.top
-
+                onClicked: {
+                    xml.test()
+                    xml.howManyRows()
+                }
             }
         }
         spacing: 5
