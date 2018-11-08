@@ -9,5 +9,6 @@
         <file>Page1.qml</file>
         <file>Page2.qml</file>
         <file>Page3.qml</file>
+        <file>SliderModel.qml</file>
     </qresource>
 </RCC>

@@ -242,4 +242,7 @@ void WrXml::writeAccount(QString accountDetails, QString account, QString passwd
     QTextStream writeFile(&file);
     writeFile<<accountDetails<<"\n"<<account<<"\n"<<passwd<<"\n";
     file.close();
+    
+    
 }
+

@@ -28,10 +28,13 @@ public:
    // Q_INVOKABLE QString readText();
     Q_INVOKABLE int howManyRows();//在mac中是这样的，如果你声明了这个函数为qml可以调用的，
     //那么你就一定要有函数的实现。否则就会报错:-1: error: symbol(s) not found for architecture x86_64
+    Q_INVOKABLE QString getStringByNum(int row);
+    Q_INVOKABLE void writeAccount(QString accountDetails,QString account,QString passwd);
 signals:
 
 public slots:
 private:
+     QString m_standpath;
      int test11;
      QVector<QString> m_stringVec;
 };

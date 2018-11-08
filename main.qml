@@ -9,6 +9,7 @@ ApplicationWindow {
     property Page1 page1: Page1{ }
     property Page2 page2: Page2{}
     property Page3 page3: Page3{}
+
     title: qsTr("PasswordManager")
     StackView{
         id:mystackview
