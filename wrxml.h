@@ -30,8 +30,10 @@ public:
     //那么你就一定要有函数的实现。否则就会报错:-1: error: symbol(s) not found for architecture x86_64
     Q_INVOKABLE QString getStringByNum(int row);
     Q_INVOKABLE void writeAccount(QString accountDetails,QString account,QString passwd);
-signals:
 
+    Q_INVOKABLE void createSig();
+signals:
+    void sigCPlus();//c++发出的信号
 public slots:
 private:
      QString m_standpath;

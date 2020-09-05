@@ -243,3 +243,8 @@ void WrXml::writeAccount(QString accountDetails, QString account, QString passwd
     writeFile<<accountDetails<<"\n"<<account<<"\n"<<passwd<<"\n";
     file.close();
 }
+
+void WrXml::createSig()
+{
+    emit sigCPlus();
+}

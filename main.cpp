@@ -1,8 +1,8 @@
-#include <QGuiApplication>
+﻿#include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include"wrxml.h"
-#include<QtQml>
-#include<QtQuick/QQuickView>
+#include "wrxml.h"
+#include <QtQml>
+#include <QtQuick/QQuickView>
 /*另外一种的注册C++到qml中的方法没有使用，是因为那种方法目前据我所知只能注册1种一下的方法，而我读写xml的方法事先先写好了，有2个参数，所以就
 换种注册qml的方法好了*/
 int main(int argc, char *argv[])
@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
    // if (engine.rootObjects().isEmpty())
      //   return -1;
     QQmlApplicationEngine engine;
+
     engine.rootContext()->setContextProperty("xml",new WrXml);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     return app.exec();

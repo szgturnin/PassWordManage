@@ -1,5 +1,5 @@
 ﻿import QtQuick 2.0
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 Rectangle{
     id:root
@@ -8,6 +8,10 @@ Rectangle{
     height: 60
     border.color: "#bdbdbd"
     border.width: 1
+
+
+
+
 
     ColumnLayout{
         spacing: 0
@@ -20,7 +24,7 @@ Rectangle{
                 background: Rectangle{
                     implicitWidth: root.width
                     implicitHeight: root.height/2
-                    opacity: 0 //为0 是看不见
+                    opacity: 0.8 //为0 是看不见
                 }
                // onTextChanged: account1.accountChange(account1.text)
             }

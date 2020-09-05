@@ -1,11 +1,15 @@
 ﻿import QtQuick 2.0
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.1
 Rectangle {
     radius: 4
     width: 190
     height: 28
     color: "#00A3FF"
+
+    signal testSig();//测试这个信号
+
+
     Button{
         anchors.fill: parent
         RowLayout{
@@ -23,9 +27,13 @@ Rectangle {
         }
         onClicked:{
             mystackview.push(page2);
+            emit: testSig();//发送这个信号
+            xml.createSig();
         }
     }
 
-
+    onTestSig: {
+        console.log("StyleButton.qml 槽函数响应");//槽函数接收
+    }
 
 }

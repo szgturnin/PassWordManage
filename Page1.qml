@@ -1,11 +1,12 @@
 ﻿import QtQuick 2.0
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 Rectangle{
 
    id:_mainwindow
    Image {
        id: mainbackground
+       antialiasing: true
        //source: "qrc:/image/yuzhibo.png"
        anchors.fill: _mainwindow
    }
@@ -33,6 +34,9 @@ Rectangle{
                id:_button
                anchors.horizontalCenter: layout1.horizontalCenter
 
+               onTestSig: {
+                   console.log("Page1.qml 槽函数响应");//槽函数接收
+               }
            }
        }
 
