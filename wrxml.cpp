@@ -248,3 +248,19 @@ void WrXml::createSig()
 {
     emit sigCPlus();
 }
+
+QString WrXml::readName()
+{
+    return m_name;
+}
+
+void WrXml::setName(QString name)
+{
+    m_name=name;
+    emit nameChanged();
+}
+
+void WrXml::slotTest()
+{
+    qDebug()<<"slot Test";
+}

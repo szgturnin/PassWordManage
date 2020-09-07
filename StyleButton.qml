@@ -29,6 +29,9 @@ Rectangle {
             mystackview.push(page2);
             emit: testSig();//发送这个信号
             xml.createSig();
+            xml.slotTest();
+            xml.name="hello";
+            //xml.setName("qml set name");
         }
     }
 
