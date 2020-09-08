@@ -3,13 +3,15 @@ import QtQuick.Window 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.1
 import szg.test.customClassToQml 1.0
-ApplicationWindow {
+import QtQuick.Window 2.2
+Window{
     visible: true
     width: 460
     height: 360
     property Page1 page1: Page1{ }
     property Page2 page2: Page2{}
     property Page3 page3: Page3{}
+
 
     title: qsTr("PasswordManager")
     StackView{

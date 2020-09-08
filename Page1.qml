@@ -33,7 +33,7 @@ Rectangle{
            StyleButton{
                id:_button
                anchors.horizontalCenter: layout1.horizontalCenter
-
+               objectName: "realBtn"
                onTestSig: {
                    console.log("Page1.qml 槽函数响应");//槽函数接收
                }

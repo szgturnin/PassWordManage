@@ -8,9 +8,10 @@ Rectangle {
     color: "#00A3FF"
 
     signal testSig();//测试这个信号
-
+    objectName: "rectangle"
 
     Button{
+        objectName: "buttonObj"
         anchors.fill: parent
         RowLayout{
             anchors.centerIn: parent
@@ -30,8 +31,10 @@ Rectangle {
             emit: testSig();//发送这个信号
             xml.createSig();
             xml.slotTest();
+
             xml.name="hello";
             //xml.setName("qml set name");
+            console.log("StyleButton clicked");
         }
     }
 

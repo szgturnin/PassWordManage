@@ -1,11 +1,13 @@
-#include <QGuiApplication>
+﻿#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include<QMetaObject>
 #include<QDebug>
 #include<QColor>
 #include<QVariant>
 #include<QString>
+#include<QQuickView>
 #include"changeqmlcolor.h"
+#include<QQuickItem>
 /*1.如果使用QQuickView +Item 的程序结构方式，通过QQuickView 的rootObject()直接可以得到QML文档的根Item对象。而callQml采用QQMLApplication
 +Window的程序结构方式，Qml文档根对象的获取就麻烦些。
 2.quitButton按钮，把他的clicked（）信号连接到QGuiApplication 的quit()槽上
@@ -19,40 +21,57 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+//    QQmlApplicationEngine engine;
+//    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     /*-----------------------------Do it-----------------------*/
-    QObject *root = NULL;
-    QList<QObject*> rootObjects=engine.rootObjects();
-    int count=rootObjects.size();
-    for(int i=0;i<count;i++)
-    {
-        if(rootObjects.at(i)->objectName()=="rootObject")
-        {
-            root = rootObjects.at(i);
-            break;
-        }
-    }
-    new ChangeQmlColor(root);
-    QObject *quitButton=root->findChild<QObject*>("quitButton");
-    if(quitButton)
-    {
-        QObject::connect(quitButton,SIGNAL(clicked()),&app,SLOT(quit()));// 对应的qml在C++里面是QObject的对象
+//    QObject *root = NULL;
+//    QList<QObject*> rootObjects=engine.rootObjects();
+//    int count=rootObjects.size();
+//    for(int i=0;i<count;i++)
+//    {
+//        if(rootObjects.at(i)->objectName()=="rootObject")
+//        {
+//            root = rootObjects.at(i);
+//            break;
+//        }
+//    }
+//    new ChangeQmlColor(root);
+//    QObject *quitButton=root->findChild<QObject*>("quitButton");
+//    if(quitButton)
+//    {
+//        QObject::connect(quitButton,SIGNAL(clicked()),&app,SLOT(quit()));// 对应的qml在C++里面是QObject的对象
 
-    }
-    QObject *textLabel=root->findChild<QObject*>("textLable");
-    if(textLabel)
-    {
-        bool bRet=QMetaObject::invokeMethod(textLabel,"setText",Q_ARG(QString,"world Hello"));
-        qDebug()<<"call setText return :"<<bRet<<endl;
-        textLabel->setProperty("color",QColor::fromRgb(255,0,0));
-        bRet=QMetaObject::invokeMethod(textLabel,"doLayout");//调用对应的方法要看C++类里面是否存在，方法名字的字符串要正确才行
-        qDebug()<<"call dolayout return :"<<bRet<<endl;
+//    }
+//    QObject *textLabel=root->findChild<QObject*>("textLable");
+//    if(textLabel)
+//    {
+//        bool bRet=QMetaObject::invokeMethod(textLabel,"setText",Q_ARG(QString,"world Hello"));
+//        qDebug()<<"call setText return :"<<bRet<<endl;
+//        textLabel->setProperty("color",QColor::fromRgb(255,0,0));
+//        bRet=QMetaObject::invokeMethod(textLabel,"doLayout");//调用对应的方法要看C++类里面是否存在，方法名字的字符串要正确才行
+//        qDebug()<<"call dolayout return :"<<bRet<<endl;
 
-    }
+//    }
     /*-----------------------------Do it-----------------------*/
-    if (engine.rootObjects().isEmpty())
-        return -1;
+//    if (engine.rootObjects().isEmpty())
+//        return -1;
+
+    QQuickView viewer;
+    viewer.setResizeMode(QQuickView::SizeRootObjectToView);
+
+    viewer.setSource(QUrl("qrc:/main.qml"));
+    viewer.show();
+
+
+    //获取qml中的对象
+    auto styBtnObject=viewer.rootObject();
+    qDebug()<<"rootObject name:"<<styBtnObject->objectName();
+    QObject *btnObj=styBtnObject->findChild<QObject*>("quitButton");
+    if(btnObj){
+        qDebug()<<"finchild success";
+        bool ret=QMetaObject::invokeMethod(btnObj,"click");
+        qDebug()<<"clicked:"<<ret;
+    }
 
     return app.exec();
 }
