@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/test.qml"));
+    const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
@@ -16,19 +16,19 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
-    QList<QObject*> rootObjects=engine.rootObjects();
-    int count=rootObjects.size();
-    qDebug()<<count;
-    for(int i=0;i<count;i++)
-    {
-        qDebug()<<rootObjects.at(i)->objectName();
-        if("windowObj"==rootObjects.at(i)->objectName()){
-            auto root=rootObjects.at(0);
-            auto btn=root->findChild<QObject*>("btn");
-            qDebug()<<btn->objectName();
-            QMetaObject::invokeMethod(btn,"testSig");
-        }
-    }
+//    QList<QObject*> rootObjects=engine.rootObjects();
+//    int count=rootObjects.size();
+//    qDebug()<<count;
+//    for(int i=0;i<count;i++)
+//    {
+//        qDebug()<<rootObjects.at(i)->objectName();
+//        if("windowObj"==rootObjects.at(i)->objectName()){
+//            auto root=rootObjects.at(0);
+//            auto btn=root->findChild<QObject*>("btn");
+//            qDebug()<<btn->objectName();
+//            QMetaObject::invokeMethod(btn,"testSig");
+//        }
+//    }
 
     return app.exec();
 }

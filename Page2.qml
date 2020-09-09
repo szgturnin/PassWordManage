@@ -3,6 +3,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 Page{
     id:page2
+    property alias rectangle: rectangle
     function createModel( modeltxt)
     {
         testModel.append({
@@ -31,6 +32,7 @@ Page{
 
     Rectangle
     {
+        id: rectangle
         radius: 8
         anchors.left: parent.left
         anchors.top: parent.top
@@ -187,3 +189,9 @@ Page{
     }
 
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

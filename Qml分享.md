@@ -1,18 +1,10 @@
 ## 写一个最简化可用的工具需要了解的qml相关点
 
 1. **Q_PROPERTY,Q_INVOKABLE作用是什么?**
-
 2. **如何把C++类注册到Qml中，如何把C++对象注册到Qml中，C++如何使用Qml的对象?**
-
 3. **C++和Qml之间的信号槽互联和互发?**
-
-4. **建议:界面布局显示使用qml进行，逻辑部分使用C++完成，UI-Logic之间通过Qt的信号槽之间来完成。**
-
-5. **Qml的语法规则简述,Qml之间进行信号槽连接的规则是什么？**
-
+4. **Qml的语法规则简述**
 6. **Qml之间的组件和布局-(Designer),简单介绍**
-
-
 
 
 
@@ -85,7 +77,7 @@ Q_PROPERTY(type name
 
 
 
-### 如何把C++类注册到Qml中，C++如何使用Qml的对象?
+### 如何把C++类注册到Qml中，如何把C++对象注册到Qml中,C++如何使用Qml的对象?
 
 #### 如何把C++对象注册到Qml中
 
@@ -131,20 +123,188 @@ int main(int argc, char *argv[])
 #### 如何把C++类注册到Qml中
 
 ```c++
-int main(int argc, char *argv[])
+qmlRegisterType<WrXml>("szg.test.customClassToQml", 1, 0, "WrXml");
+```
+
+> 在Qml中导入并且使用
+
+```javascript
+import szg.test.customClassToQml 1.0
+```
+
+之后就可以像使用Qml类型一样，使用这个注册的了C++对象。类型名为WrXml
+
+##### Qt类枚举类型注册
+
+> 上代码
+
+```c++
+class WrXml : public QObject
 {
-    QGuiApplication app(argc, argv);
-    
-    qmlRegisterType<ColorMaker>("an.qt.ColorMaker", 1, 0, "ColorMaker");
-    QtQuick2ApplicationViewer viewer;
-    viewer.setMainQmlFile(QStringLiteral("qml/colorMaker/main.qml"));
-    viewer.showExpanded();
- 
-    return app.exec();
+    Q_OBJECT
+    Q_ENUMS(TESTENUM)
+public:
+    enum TESTENUM{
+        ZERO,
+        ONE,
+        TWO,
+        THREE,
+        FOUR,
+        FIVE
+    };
+ }
+```
+
+**在Qml中就以以下形式使用就行了： 类型名.枚举值       （WrXml.ZERO）**
+
+#### C++如何使用Qml的对象?
+
+> 讨论这个情况，需要先讲述Qml文件加载的几种方式
+
+1. **QQmlApplicationEngine加载QML**
+
+查看帮助文档，可以看出QQmlApplicationEngine继承自QQmlEngine->QObject.    
+
+这种方式属于QQmlApplicationEngine搭配Window(**Qml类型**)
+
+下面是获取Qml对象的方式介绍：
+
+```c++
+QQmlApplicationEngine engine;
+engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+QObject *root = NULL;
+QList<QObject*> rootObjects=engine.rootObjects();
+int count=rootObjects.size();
+for(int i=0;i<count;i++)
+{     
+    if(rootObjects.at(i)->objectName()=="rootObject")
+    {
+        root = rootObjects.at(i);
+        break;
+    }
+    qDebug()<<rootObjects.at(i)->objectName();
 }
+QObject *quitButton=root->findChild<QObject*>("quitButton");
+QObject::connect(quitButton,SIGNAL(clicked()),&app,SLOT(quit()));
+bool ret=QMetaObject::invokeMethod(quitButton,"click");
 ```
 
 
 
-#### C++如何使用Qml的对象?
+2. **QQuickView加载QML **
+
+```c++
+    QQuickView viewer;
+    viewer.setResizeMode(QQuickView::SizeRootObjectToView);
+
+    viewer.setSource(QUrl("qrc:/main.qml"));
+    viewer.show();
+
+	auto styBtnObject=viewer.rootObject();
+    qDebug()<<"rootObject name:"<<styBtnObject->objectName();
+    QObject *btnObj=styBtnObject->findChild<QObject*>("quitButton");
+    if(btnObj){
+        qDebug()<<"finchild success";
+        bool ret=QMetaObject::invokeMethod(btnObj,"click");
+        qDebug()<<"clicked:"<<ret;
+    }
+```
+
+QQuickView加载Qml的区别和上面的QQmlApplicationEngine加载Qml的区别是，上面的main.qml主题窗口类型是window。这里若要是想要正常的运作，需要把Window改成Rectangle。Rectangle是不支持在Qml里面设置窗口的标题的，可以在C++里面进行设置。
+
+3. **QQuickWidget加载QML** 
+
+```C++
+	QQuickWidget *view = new QQuickWidget;
+    view->setSource(QUrl::fromLocalFile("myqmlfile.qml"));
+    view->show();
+```
+
+
+
+通过上述的3种方式，拿到了QMl的对象了。就可以通过元对象系统对该对象进行调用了。
+
+### C++和Qml之间的信号槽互联和互发?
+
+当在C++端拿到了Qml的对象后，就可以对该对象进行操作了。无论是调用对方的函数还是连接信号和槽
+
+对于Qml，导入到Qml上下文的对象，可以全局使用，以Qml的方式连接信号和槽。
+
+> C++端连接Qml对象的信号，和调用对方的函数
+
+```c++
+QObject *quitButton=root->findChild<QObject*>("quitButton");
+QObject::connect(quitButton,SIGNAL(clicked()),&app,SLOT(quit()));
+bool ret=QMetaObject::invokeMethod(quitButton,"click");
+```
+
+
+
+> Qml端连接C++的信号，和调用对方的函数
+
+```c++
+    function recvCPlusSig(){
+        console.log("c++ sig connect");
+    }
+    function onNameChanged(){
+        console.log("name changed");
+        console.log(WrXml.ONE);
+    }    
+	Component.onCompleted: {
+        xml.sigCPlus.connect(recvCPlusSig)//C++信号连接到了qml的函数中
+        xml.nameChanged.connect(onNameChanged)
+    }
+```
+
+调用的话，全局都可以。任意地方都可以使用注册的对象调用进入元对象系统的函数。
+
+### Qml的语法规则简述
+
+大体上就是javascript的语法规则。
+
+阐述几个Qml特殊的地方:
+
+```javascript
+property alias
+给.qml文件中的某些属性取一个别名，相当于该属性的引用。当该Qml文件作为组件给别的.Qml文件使用的时候，该别名可以被直接使用，相当于该组件对象的属性
+```
+
+```javascript
+首字母大写的.qml文件，可以作为组件被别的.qml文件直接调用，调用方式如下：
+Atest.qml
+在Btest.qml中，直接使用Atest{}来使用即可，可以新增属性，若属性值和之前的重复，当下的属性覆盖之前的属性
+```
+
+```c++
+Qml文件之间发送信号和槽函数的连接
+使用 single 关键字进行信号的定义    ，例如 single sig()
+发送信号直接  sig() 即等于C++的emit sig()
+
+对于这个sig的信号，槽函数的写法：
+
+```
+
+
+
+
+
+### Qml之间的组件和布局-(Designer),简单介绍
+
+
+
+
+
+
+
+
+
+
+
+
+
+对于Qml/Qt界面如何实现，参考网上资料的意见，总结如下：
+
+Qml本身适合拿来完成纯界面展现，尤其是大型的界面，会比传统的widget要来的方便和美观。小型的工具，qml-designer和传统的widget的界面拖拽差不多。
+
+**建议:界面布局显示使用qml进行，逻辑部分使用C++完成，然后把对象注册到qml中去,UI-Logic之间通过Qt的信号槽之间来完成。**
 

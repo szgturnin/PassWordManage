@@ -20,7 +20,7 @@ Rectangle {
                 source: "qrc:/image/safe.png"
             }
             Text {
-                id: text
+                id: heihei
                 text: qsTr("安 全 登 录")
                 color: "#fff"
                 font.pixelSize: 12

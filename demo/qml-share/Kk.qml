@@ -4,26 +4,30 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 Rectangle {
     visible: true
-    width: 640
-    height: 480
+    width: 320
+    height: 240
     objectName: "windowObj1"
     id:window
-    signal clicked()
+    signal blick()
+
+    border.color: "green"
+
 
     Text {
         id: btn1
         text: qsTr("btn1")
         anchors.fill: parent
+        color: "red"
     }
 
     MouseArea{
         onClicked: {
-            clicked();
+            blick();
         }
         anchors.fill: parent
     }
 
-    onClicked: {
+    onBlick: {
         console.log("test.qml send sig ,this file onClicked")
     }
 

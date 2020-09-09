@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>test.qml</file>
+        <file>Kk.qml</file>
+        <file>Btn.qml</file>
     </qresource>
 </RCC>
