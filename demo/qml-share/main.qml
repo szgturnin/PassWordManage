@@ -41,4 +41,6 @@ Window/*ApplicationWindow*/{
         target: kk
         onBlick:btn.btnFunc();
     }
+
+
 }
