@@ -280,7 +280,146 @@ Qml文件之间发送信号和槽函数的连接
 使用 single 关键字进行信号的定义    ，例如 single sig()
 发送信号直接  sig() 即等于C++的emit sig()
 
-对于这个sig的信号，槽函数的写法：
+qml文件的信号槽连接方式，接下去介绍3种模式:
+```
+
+1. qml类中单信号槽连接方式:
+
+```javascript
+import QtQuick 2.9
+import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.3
+Rectangle {
+    visible: true
+    width: 320
+    height: 240
+    objectName: "windowObj1"
+    id:window
+    signal blick()
+
+    border.color: "green"
+
+
+    Text {
+        id: btn1
+        text: qsTr("btn1")
+        anchors.fill: parent
+        color: "red"
+    }
+
+    MouseArea{
+        onClicked: {
+            blick();
+        }
+        anchors.fill: parent
+    }
+
+    onBlick: {
+        console.log("test.qml send sig ,this file onClicked")
+    }
+
+}
+```
+
+2. Component.onCompleted 的连接方式
+
+Component.onCompleted{}，可以认为被{}包括的代码，会在该qml文件被加载后，自动执行。所以可以在{}执行一些信号槽的连接。可以拿来连接C++对象和qml对象的信号槽。也可以连接qml对象的信号或者方法和指定的函数或信号。
+
+```javascript
+import QtQuick 2.9
+import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.3
+Rectangle {
+    id:item
+    visible: true
+    width: 320
+    height: 240
+    Text {
+        id: name
+        text: qsTr("Btn")
+        anchors.fill: parent
+        color: "black"
+        font.pixelSize: 18
+    }
+    border.color: "green"
+    signal btnClick();
+    MouseArea{
+        anchors.fill: parent
+        onClicked: {
+            btnClick();
+        }
+    }
+
+    function bbtnClick(){
+        console.log("bbtnClick")
+    }
+
+    Component.onCompleted:{
+        btnClick.connect(bbtnClick);
+    }
+    onBtnClick:{
+        console.log("onBtnClick");
+    }
+}
+```
+
+3. Connections 连接
+
+```javascript
+import QtQuick 2.9
+import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.3
+import QtQml 2.2
+Window/*ApplicationWindow*/{
+    visible: true
+    width: 640
+    height: 480
+    title: qsTr("Hello World")
+    objectName: "windowObj"
+    id:window
+
+    ColumnLayout{
+        id:lay
+        anchors.fill: parent
+        Kk{
+
+             id:kk
+             anchors.top:parent.top
+
+        }
+
+        Btn{
+            anchors.top: kk.bottom
+            id:btn
+            function btnFunc(){
+                console.log("btnFunc");
+            }
+        }
+
+    }
+
+
+
+    function laySlotFunc(){
+        console.log("laySlotFunc")
+    }
+
+    Component.onCompleted:{
+
+        kk.blick.connect(laySlotFunc);
+        console.log("component is ready");
+    }
+
+    Connections{
+        target: kk
+        onBlick:btn.btnFunc();
+    }
+
+
+}
 
 ```
 
@@ -289,14 +428,6 @@ Qml文件之间发送信号和槽函数的连接
 
 
 ### Qml之间的组件和布局-(Designer),简单介绍
-
-
-
-
-
-
-
-
 
 
 

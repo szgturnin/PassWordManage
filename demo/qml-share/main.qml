@@ -15,17 +15,23 @@ Window/*ApplicationWindow*/{
         id:lay
         anchors.fill: parent
         Kk{
+
              id:kk
-             anchors.bottom:parent.bottom
+             anchors.top:parent.top
+
         }
+
+        Btn{
+            anchors.top: kk.bottom
+            id:btn
+            function btnFunc(){
+                console.log("btnFunc");
+            }
+        }
+
     }
 
-    Btn{
-        id:btn
-        function btnFunc(){
-            console.log("btnFunc");
-        }
-    }
+
 
     function laySlotFunc(){
         console.log("laySlotFunc")
