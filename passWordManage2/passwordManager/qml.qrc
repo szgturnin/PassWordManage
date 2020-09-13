@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>LoginWindow.qml</file>
+        <file>StyleButton.qml</file>
+        <file>image/safe.png</file>
+        <file>image/yuzhibo.jpg</file>
+        <file>image/yuzhibo.png</file>
+        <file>PassWdDetail.qml</file>
+        <file>CreateOrDelete.qml</file>
     </qresource>
 </RCC>
