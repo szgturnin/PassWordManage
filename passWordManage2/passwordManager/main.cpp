@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-    QString filePath=QGuiApplication::applicationDirPath()+"passwd.ini";
+    QString filePath=QGuiApplication::applicationDirPath()+"/passwd.ini";
 
     QQmlApplicationEngine engine;
     IniFile *iniFile=new IniFile(filePath,&app);

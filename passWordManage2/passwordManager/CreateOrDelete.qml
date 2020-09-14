@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.1
@@ -30,13 +30,25 @@ Rectangle{
         height: parent.height/10
         width: parent.width/5
         onClicked: {
-            //mainWindow_stackView
+            mainWindow_stackView.push(detailPage);
         }
     }
 
     Component.onCompleted: {
         var list=iniFile.getAllData();
-        console.log(list)
+        for(var i in list){
+            console.log(list[i]);
+            list_model.append(
+                        {
+                            slider_text:list[i]
+                        }
+                        );
+//            var msgs=list[i].split("/");
+//            var group=msgs[0];
+//            var key=msgs[1];
+//            var value=msgs[2];
+
+        }
 
     }
 
@@ -46,5 +58,35 @@ Rectangle{
         height: parent.height/10*9
         anchors.top: addBtn.bottom
 
+        ListModel{
+            id:list_model
+        }
+
+        ListView{
+            highlightFollowsCurrentItem: true
+            anchors.fill: showList
+            id:m_listView
+            model: list_model
+
+            spacing: 5
+
+            delegate:SliderModel{
+                width: parent.width
+                id:slider_model
+                height: parent.height/9
+                Text {
+                    text: slider_text
+                    anchors.centerIn: parent
+                    font.pixelSize: 27
+                }
+                onContentRectangleClicked: {
+                    console.log("connect contentRectangleClicked")
+                }
+                onDeleteButtonClicked: {
+                    m_listView.remove(index);
+
+                }
+            }
+        }
     }
 }

@@ -8,5 +8,6 @@
         <file>image/yuzhibo.png</file>
         <file>PassWdDetail.qml</file>
         <file>CreateOrDelete.qml</file>
+        <file>SliderModel.qml</file>
     </qresource>
 </RCC>

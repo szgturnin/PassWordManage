@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 
 Item {
     id: container
@@ -75,22 +75,24 @@ Item {
 
     // private:
 
-    onContentRectangleClicked: {
-        if (ListView.view !== null)
-        {//这个信号是由Listview中的model发出来的，ListView,可能指的就是包含这个view的父
-            ListView.view.currentItem.hideDeleteButton(true)
-            ListView.view.currentIndex = index
-        }
-    }
+//    onContentRectangleClicked: {
+//        if (ListView.view !== null)
+//        {//这个信号是由Listview中的model发出来的，ListView,可能指的就是包含这个view的父
+//            ListView.view.currentItem.hideDeleteButton(true)
+//            ListView.view.currentIndex = index
+//        }
+//         console.log("onContentRectangleClicked")
+//    }
 
-    onDeleteButtonShown: {
-        if (ListView.view !== null) {
-            if (ListView.view.currentItem !== null) {
-                ListView.view.currentItem.hideDeleteButton(true)
-            }
-            ListView.view.currentIndex = index
-        }
-    }
+//    onDeleteButtonShown: {
+//        if (ListView.view !== null) {
+//            if (ListView.view.currentItem !== null) {
+//                ListView.view.currentItem.hideDeleteButton(true)
+//            }
+//            ListView.view.currentIndex = index
+//        }
+//        console.log("onDeleteButtonShown")
+//    }
 
     Rectangle {
         id: deleteButton
@@ -168,6 +170,7 @@ Item {
             readonly property bool draging: drag.active
             onDragingChanged:
             {
+                console.log("onDragChanged")
                 if (!draging)
                 {
                     if (contentRect.state == "hidden")

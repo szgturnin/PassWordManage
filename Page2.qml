@@ -101,9 +101,7 @@ Page{
         }
         ListView
         {
-            /*onSendListView{
 
-            }*/
 
             highlightFollowsCurrentItem: true
             anchors.fill: window

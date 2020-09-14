@@ -19,6 +19,7 @@ QStringList IniFile::getAllData()
         auto value=m_settins->value(i).toString();
         auto msg=i+"/"+value;
         list.append(msg);
+        //qDebug()<<msg;
     }
     return list;
 }

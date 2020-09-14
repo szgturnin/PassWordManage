@@ -1,9 +1,9 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 Rectangle {
     id:loginWindow
-    radius: 4
+    radius: 16
     width: 640
     height: 480
     border.color:"#17bbb8"
@@ -69,6 +69,9 @@ Rectangle {
 
         StyleButton{
             id:loginBtn
+            onSigStyleBtnClick: {
+                mainWindow_stackView.push(createPage);
+            }
 
         }
 

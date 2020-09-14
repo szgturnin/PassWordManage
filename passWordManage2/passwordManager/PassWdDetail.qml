@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.1
@@ -56,7 +56,7 @@ Rectangle{
         RowLayout{
             id:inputAccount_HLay
             Text {
-                text: qsTr("账号:")
+                text: qsTr("账号:");
                 font.pixelSize: 36
                 anchors.left: inputAccount_HLay.left
             }
@@ -72,7 +72,7 @@ Rectangle{
             Text {
                 text: qsTr("密码:")
                 font.pixelSize: 36
-                anchors.left: whereAccount_HLay.left
+                anchors.left: passWd_HLay.left
             }
             TextField{
                 id: passWd
