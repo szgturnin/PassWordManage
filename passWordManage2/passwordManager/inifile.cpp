@@ -26,5 +26,6 @@ QStringList IniFile::getAllData()
 
 void IniFile::remove(QString group, QString key)
 {
+    qDebug()<<group<<"  === "<<key;
     m_settins->remove(group+"/"+key);
 }

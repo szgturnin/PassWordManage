@@ -1,5 +1,5 @@
 ﻿import QtQuick 2.0
-
+import QtQml 2.2
 Item {
     id:slider_model
 
@@ -23,24 +23,25 @@ Item {
     signal contentRectangleReleased(var mouse)
     signal contentRectangleWheel(var wheel)
 
-    property color deleteButtonPressedColor: "#80FF0000"
     property color deleteButtonColor: "#FF0000"
     Rectangle{
         id:deleteBtn
         width: deleteButtonWidth
         height: parent.height
         anchors.right: parent.right
-        color: deleteButtonMouseArea.pressed ?
-                   deleteButtonPressedColor  : deleteButtonColor
+        color: deleteArea.pressed ?
+                   "#e01876"  : deleteButtonColor
         Text {
             anchors.centerIn: parent
-            color: "white"
+            color: Qt.rgba(1,1,1,1)
             font.pixelSize: 14
             text: qsTr("Delete")
+
         }
 
         MouseArea{
             anchors.fill: parent
+            id:deleteArea
             onCanceled: {
                 deleteButtonCanceled();
             }
@@ -102,28 +103,28 @@ Item {
             drag.minimumX: -deleteBtn.width
             drag.maximumX: 20
             opacity: (600-contentMouseArea.x)/600 //随着拖动改变控件的透明度
-            readonly property bool draging: drag.active
-//            onDragChanged: {
-//                console.log("onDragChanged")
-//                if(!draging){
-//                    if(contentRect.state=="hidden"){
-//                        if(contentRect.x<(0-5)){
-//                            contentRect.state="shown";
-//                        }
-//                        else{
-//                            contentRect.state="hidden";
-//                        }
-//                    }
-//                    else if(contentRect.state=="shown"){
-//                        if(contentRect.x>(5-deleteBtn.width)){
-//                            contentRect.state="hidden";
-//                        }
-//                        else{
-//                            contentRect.state="shown";
-//                        }
-//                    }
-//                }
-//            }
+            readonly property bool draging: drag.active 
+            onDragingChanged:{//看到上面的别名draging了嘛，onDragingChanged就是设置这个别名自动加上的
+                console.log("onDragChanged")
+                if(!draging){
+                    if(contentRect.state=="hidden"){
+                        if(contentRect.x<(0-5)){
+                            contentRect.state="shown";
+                        }
+                        else{
+                            contentRect.state="hidden";
+                        }
+                    }
+                    else if(contentRect.state=="shown"){
+                        if(contentRect.x>(5-deleteBtn.width)){
+                            contentRect.state="hidden";
+                        }
+                        else{
+                            contentRect.state="shown";
+                        }
+                    }
+                }
+            }
 
             onCanceled: {
                 contentRectangleCanceled();

@@ -7,7 +7,6 @@ Rectangle{
 
     ColumnLayout{
         id:vLay
-        anchors.centerIn: passWdDetail_id
 
 
 
@@ -32,7 +31,11 @@ Rectangle{
 
                 onClicked: {
                     iniFile.write(whereAccount.text,inputAccount.text,passWd.text);//注册的对象直接调用
-
+                    createPage.addASlider(whereAccount.text,inputAccount.text,passWd.text);
+                    whereAccount.text="";
+                    inputAccount.text="";
+                    passWd.text="";
+                    mainWindow_stackView.pop();
                 }
             }
         }

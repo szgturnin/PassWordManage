@@ -6,32 +6,51 @@ Rectangle{
     id:createOrReturn
 
     Rectangle{
-        radius: 8
+        radius: 16
         anchors.left: parent.left
         anchors.top: parent.top
         height: createOrReturn.height/10
         width: parent.width/5
-        Button{
+        id:backRec
+        color: backBtnArea.pressed? Qt.rgba(0.89,0.08,0.08,1):"#80999e"
+        Text{
             id:backBtn
             text: qsTr("返回")
-            anchors.fill: parent
-            visible: true
-            onClicked: {
-                mainWindow_stackView.pop();
+            font.pixelSize: 24
+            anchors.centerIn: backRec
+            MouseArea{
+                id:backBtnArea
+                anchors.fill: parent
+                onClicked: {
+                    mainWindow_stackView.pop();
+                }
             }
+
+
         }
     }
 
-    Button{
+    Rectangle{
         id:addBtn
-        text: qsTr("添加")
+        radius: 16
+        color: addBtnArea.pressed? Qt.rgba(0.89,0.08,0.08,1):"#80999e"
         anchors.right: parent.right
         anchors.top: parent.top
         height: parent.height/10
         width: parent.width/5
-        onClicked: {
-            mainWindow_stackView.push(detailPage);
+        Text {
+            text: qsTr("添加")
+            anchors.centerIn: parent
+            font.pixelSize: 24
+            MouseArea{
+                id:addBtnArea
+                anchors.fill: parent
+                onClicked: {
+                    mainWindow_stackView.push(detailPage);
+                }
+            }
         }
+
     }
 
     Component.onCompleted: {
@@ -50,6 +69,15 @@ Rectangle{
 
         }
 
+    }
+
+    function addASlider(group,key,value){
+        var msg=group+"/"+key+"/"+value;
+        list_model.append(
+                    {
+                        slider_text:msg
+                    }
+                    );
     }
 
     Rectangle{
@@ -71,9 +99,9 @@ Rectangle{
             spacing: 5
 
             delegate:SliderModel{
-                width: parent.width
+                width: m_listView.width
                 id:slider_model
-                height: parent.height/9
+                height: m_listView.height/9
                 Text {
                     text: slider_text
                     anchors.centerIn: parent
@@ -83,8 +111,13 @@ Rectangle{
                     console.log("connect contentRectangleClicked")
                 }
                 onDeleteButtonClicked: {
-                    m_listView.remove(index);
-
+                    console.log("remove index:",index,"text:",slider_text);
+                    var list=slider_text.split("/");
+                    console.log(list);
+                    var group=list[0];
+                    var key=list[1];
+                    iniFile.remove(group,key);
+                    list_model.remove(index);
                 }
             }
         }
